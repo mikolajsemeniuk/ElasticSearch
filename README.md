@@ -37,6 +37,10 @@ Create index with mapping using json file
 ```sh
 curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d @es.json
 ```
+Get index mapping
+```sh
+curl -X GET "localhost:9200/products/_mapping" | json_pp
+```
 Delete index
 ```sh
 curl --request DELETE --url http://localhost:9200/index_name
