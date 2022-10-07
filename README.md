@@ -27,6 +27,7 @@ curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
     "number_of_shards": 1
   },
   "mappings": {
+    "dynamic": "strict",
     "properties": {
       "field1": { "type": "text" }
     }
