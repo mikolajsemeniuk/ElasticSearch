@@ -18,13 +18,29 @@ curl --request GET \
 ```
 Create index
 ```sh
-export INDEX=index_name
 curl --request PUT \
   --url http://localhost:9200/index_name
 ```
+Create index with mapping
+```sh
+curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "properties": {
+      "field1": { "type": "text" }
+    }
+  }
+}'
+```
+Create index with mapping using json file
+```sh
+curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d @es.json
+```
 Delete index
 ```sh
-export INDEX=index_name
 curl --request DELETE \
   --url http://localhost:9200/index_name
 ```
@@ -88,31 +104,4 @@ curl --request POST \
 		"match_all": {}	
 	}
 }'
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
 ```
