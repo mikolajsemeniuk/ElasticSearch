@@ -17,7 +17,7 @@ curl --request GET --url http://localhost:9200/_cat/nodes
 ```
 Create index
 ```sh
-curl --request PUT --url http://localhost:9200/index_name
+curl --request PUT --url http://localhost:9200/index_name | json_pp
 ```
 Create index with mapping
 ```sh
@@ -32,11 +32,21 @@ curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
       "field1": { "type": "text" }
     }
   }
-}'
+}' | json_pp
 ```
 Create index with mapping using json file
 ```sh
-curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d @es.json
+curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d @es.json | json_pp
+```
+Modyfing existing mapping
+```sh
+curl -X PUT "localhost:9200/products/_mapping" -H 'Content-Type: application/json' -d'
+{
+    "dynamic": "strict",
+    "properties": {
+      "field2": { "type": "date" }
+    }
+}' | json_pp
 ```
 Get index mapping
 ```sh
