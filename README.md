@@ -29,7 +29,8 @@ curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
   "mappings": {
     "dynamic": "strict",
     "properties": {
-      "field1": { "type": "text" }
+      "field1": { "type": "text" },
+      "field2": { "type": "long", "coerce": false }
     }
   }
 }' | json_pp
@@ -44,7 +45,7 @@ curl -X PUT "localhost:9200/products/_mapping" -H 'Content-Type: application/jso
 {
     "dynamic": "strict",
     "properties": {
-      "field2": { "type": "date" }
+      "field3": { "type": "date" }
     }
 }' | json_pp
 ```
