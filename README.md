@@ -11,6 +11,10 @@ Get all indexes
 ```sh
 curl --request GET --url localhost:9200/_cat/indices
 ```
+Get schema
+```
+curl --request GET --url localhost:9200/index_name/_mapping | json_pp
+```
 Get all nodes
 ```sh
 curl --request GET --url http://localhost:9200/_cat/nodes
