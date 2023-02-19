@@ -79,6 +79,19 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
     }
 }' | json_pp
 ```
+Get all documents by keys (id)
+```sh
+curl --request GET --url http://localhost:9200/resumes/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "ids": {
+        "values": [
+          "d715b4dc-e69a-40f5-91cb-64de6ea3d0f6"
+        ]
+      }
+    }
+}'
+```
 Get all documents with `term` condition (`term` are not analyzed by analyzer, so `term` would be exacted matched, be aware of uppercase)
 ```sh
 curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
@@ -99,6 +112,34 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
         "name": {
 	  "value": "mike"
 	}
+      }
+    }
+}'
+```
+Get all documents matching multiple terms
+```sh
+curl --request GET --url http://localhost:9200/resumes/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "terms": {
+        "name": [
+	  "mike",
+          "mike1"
+	]
+      }
+    }
+}'
+```
+Get all documents matching multiple terms when `names` is array
+```sh
+curl --request GET --url http://localhost:9200/resumes/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "terms": {
+        "names.keywords": [
+	  "mike",
+          "mike1"
+	]
       }
     }
 }'
