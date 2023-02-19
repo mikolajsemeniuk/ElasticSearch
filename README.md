@@ -61,6 +61,15 @@ Delete index
 ```sh
 curl --request DELETE --url http://localhost:9200/index_name
 ```
+Get all documents in index (shorter version)
+```sh
+curl --request GET --url 'http://localhost:9200/index_name/_search' 
+```
+Get all documents in index with condition (shorter version)
+```sh
+# http://localhost:9200/resumes/_search?q=name:mike1 AND raw:Some text
+curl --request GET --url 'http://localhost:9200/resumes/_search?q=name%3Amike1%20AND%20raw%3ASome%20text' 
+```
 Get all documents in index
 ```sh
 curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
