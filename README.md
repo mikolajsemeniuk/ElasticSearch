@@ -144,6 +144,20 @@ curl --request GET --url http://localhost:9200/resumes/_search --header 'Content
     }
 }'
 ```
+Get all documents via numeric values
+```sh
+curl --request GET --url http://localhost:9200/resumes/_search --header 'Content-Type: application/json' \
+  --data '{
+	"query": {
+		"range": {
+			"similarity": {
+				"gte": 1,
+				"lte": 10
+			}
+		}
+	}
+}'
+```
 Get all documents with `match` condition (`match` are analyzed by analyzer, so `match` wouldn't be exacted matched, use `match` for flexible queries)
 ```sh
 curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
