@@ -79,6 +79,52 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
     }
 }' | json_pp
 ```
+Get all documents with term condition (term are not analyzed by analyzer, so term would be exacted matched)
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "term": {
+        "name": "mike"
+      }
+    }
+}'
+```
+Get all documents with term condition (term are not analyzed by analyzer, so term would be exacted matched), longer version
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "term": {
+        "name": {
+	  "value": "mike"
+	}
+      }
+    }
+}'
+```
+Get all documents with match condition (match are analyzed by analyzer, so match wouldn't be exacted matched, use match for flexible queries)
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "match": {
+        "name": "mike"
+      }
+    }
+}'
+```
+Get all documents with match_phrase condition (match_phrase are analyzed by analyzer, but are exactly matched, use match_phrase to match capital letters because term won't find Capitalized matches because every stuff saved to elastic with default analyzer are saved as lowercase)
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "match_phrase": {
+        "name": "mike"
+      }
+    }
+}'
+```
 Create document without id
 ```sh
 curl --request POST --url http://localhost:9200/index_name/_doc --header 'Content-Type: application/json' \
