@@ -132,7 +132,7 @@ curl --request GET --url http://localhost:9200/resumes/_search --header 'Content
 ```
 Get all documents matching multiple terms when `names` is array
 ```sh
-curl --request GET --url http://localhost:9200/resumes/_search --header 'Content-Type: application/json' \
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
   --data '{
     "query": {
       "terms": {
@@ -146,16 +146,31 @@ curl --request GET --url http://localhost:9200/resumes/_search --header 'Content
 ```
 Get all documents via numeric values
 ```sh
-curl --request GET --url http://localhost:9200/resumes/_search --header 'Content-Type: application/json' \
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
   --data '{
-	"query": {
-		"range": {
-			"similarity": {
-				"gte": 1,
-				"lte": 10
-			}
-		}
+    "query": {
+      "range": {
+        "similarity": {
+	  "gte": 1,
+          "lte": 10
 	}
+      }
+    }
+}'
+```
+Get all documents via dates
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "range": {
+        "created": {
+	  "gte": "2023-02-18",
+          "lte": "2023-02-20",
+	  "format": "yyyy-MM-dd"
+	}
+      }
+    }
 }'
 ```
 Get all documents with `match` condition (`match` are analyzed by analyzer, so `match` wouldn't be exacted matched, use `match` for flexible queries)
