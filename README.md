@@ -173,6 +173,77 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
     }
 }'
 ```
+Get all documents via dates minues 1 year and 1 day
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "range": {
+        "created": {
+	  "gte": "2023-02-18||-1y-1d",
+	  "format": "yyyy-MM-dd"
+	}
+      }
+    }
+}'
+```
+Get all documents via dates minus 1 year and round up to month
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "range": {
+        "created": {
+	  "gte": "now/M-1y"
+	}
+      }
+    }
+}'
+```
+Get all documents with non null values or which have at least one element in array
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "exists": {
+        "field": "tags"
+      }
+    }
+}'
+```
+Get all documents starts with vege
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "prefix": {
+        "description": "vege"
+      }
+    }
+}'
+```
+Get all documents starts with wildcard
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "wildcard": {
+        "description": "v*get?ble"
+      }
+    }
+}'
+```
+Get all documents starts with regular expression
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "regexp": {
+        "description": "veget[a-zA-Z]ble"
+      }
+    }
+}'
+```
 Get all documents with `match` condition (`match` are analyzed by analyzer, so `match` wouldn't be exacted matched, use `match` for flexible queries)
 ```sh
 curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
