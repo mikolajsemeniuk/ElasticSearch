@@ -26,6 +26,7 @@
 * [Get all documents starts with wildcard](###get-all-documents-starts-with-wildcard)
 * [Get all documents starts with regular expression](###get-all-documents-starts-with-regular-expression)
 * [Get all documents with match condition](###get-all-documents-with-match-condition)
+* [Get all documents with match condition AND operator](###get-all-documents-with-match-condition-and-operator)
 * [Get all documents with match_phrase condition](###get-all-documents-with-match_phrase-condition)
 * [Create document without id](###create-document-without-id)
 * [Update document or create new with id](###update-document-or-create-new-with-id)
@@ -279,6 +280,19 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
 ```
 ### Get all documents with `match` condition
 `match` are analyzed by analyzer, so `match` wouldn't be exacted matched, use `match` for flexible queries
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "match": {
+        "name": "mike mock"
+      }
+    }
+}'
+```
+### Get all documents with `match` condition AND operator
+by default `match` uses `OR` operator which means elastic will look up on name which contains `mike` or `mock`
+we can ensure that elastic will find records which has to have `mike` and `mock` in `name`
 ```sh
 curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
   --data '{
