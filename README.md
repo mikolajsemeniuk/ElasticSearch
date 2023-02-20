@@ -29,6 +29,11 @@
 * [Get all documents with match condition AND operator](###get-all-documents-with-match-condition-and-operator)
 * [Get all documents with match_phrase condition](###get-all-documents-with-match_phrase-condition)
 * [Get all documents with multi_match condition](###get-all-documents-with-multi_match-condition)
+* [Boolean logic](##boolean-logic)
+  - [Must](###must)
+  - [Must_Not](###must_not)
+  - [Should](###should)
+  - [Filter](###filter)
 * [Create document without id](###create-document-without-id)
 * [Update document or create new with id](###update-document-or-create-new-with-id)
 * [Update document by id only](###update-document-by-id-only)
@@ -300,7 +305,7 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
     "query": {
       "match": {
         "name": {
-	  "query": "mike mock"
+	  "query": "mike mock",
 	  "operator": "and"
 	}
       }
@@ -326,8 +331,119 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
   --data '{
     "query": {
       "multi_match": {
-        "query": "mike mock"
+        "query": "mike mock",
 	"fields": ["title", "name"]
+      }
+    }
+}'
+```
+## Boolean logic
+### Must
+`must` doesn't filter documents which match conditions or not but gives highest score to documents which face the condition
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "bool": {
+        "must": [
+	  {
+	    "match": {
+	      "name": "mike"
+	    }
+	  },
+	  {
+	    "range": {
+	      "amount": {
+	        "gte": 10
+	      }
+	    }
+	  }
+	]
+      }
+    }
+}'
+```
+### Must_Not
+`Mmst_not` doesn't filter documents which match conditions or not but gives highest score to documents which face the condition
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "bool": {
+        "must": [
+	  {
+	    "match": {
+	      "name": "mike"
+	    }
+	  },
+	],
+	"must_not": [
+	  {
+	    "match": {
+	      "surname": "mock"
+	    }
+	  }
+	]
+      }
+    }
+}'
+```
+### Should
+`should` doesn't filter documents which match conditions or not but gives highest score to documents which face the condition
+it assigns the score in lower priority than `must` or `must_not`, if there is no `must` or `must_not` condition `should` will take role of `must`
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "bool": {
+        "must": [
+	  {
+	    "match": {
+	      "name": "mike"
+	    }
+	  },
+	],
+	"must_not": [
+	  {
+	    "match": {
+	      "surname": "mock"
+	    }
+	  }
+	],
+	"should": [
+	  {
+	    "match": {
+	      "raw": "something"
+	    }
+	  }
+	]
+      }
+    }
+}'
+```
+### Filter
+`Filter` doesn't calculate score but exclude elements which not match the condition, it's much more faster than `match` or `should`
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "bool": {
+        "must": [
+	  {
+	    "match": {
+	      "name": "mike"
+	    }
+	  }
+	],
+	"filter": [
+	  {
+	    "range": {
+	      "amount": {
+	        "gte": 10
+	      }
+	    }
+	  }
+	]
       }
     }
 }'
