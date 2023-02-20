@@ -28,6 +28,7 @@
 * [Get all documents with match condition](###get-all-documents-with-match-condition)
 * [Get all documents with match condition AND operator](###get-all-documents-with-match-condition-and-operator)
 * [Get all documents with match_phrase condition](###get-all-documents-with-match_phrase-condition)
+* [Get all documents with multi_match condition](###get-all-documents-with-multi_match-condition)
 * [Create document without id](###create-document-without-id)
 * [Update document or create new with id](###update-document-or-create-new-with-id)
 * [Update document by id only](###update-document-by-id-only)
@@ -298,19 +299,35 @@ curl --request GET --url http://localhost:9200/index_name/_search --header 'Cont
   --data '{
     "query": {
       "match": {
-        "name": "mike"
+        "name": {
+	  "query": "mike mock"
+	  "operator": "and"
+	}
       }
     }
 }'
 ```
 ### Get all documents with `match_phrase` condition 
-`match_phrase` are analyzed by analyzer, but are exactly matched, use `match_phrase` to match capital letters because `term` won't find Capitalized matches because every stuff saved to elastic with default analyzer are saved as lowercase
+`match_phrase` are analyzed by analyzer, but are exactly matched (order matters unlike in `match`), use `match_phrase` to match capital letters because `term` won't find Capitalized matches because every stuff saved to elastic with default analyzer are saved as lowercase
 ```sh
 curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
   --data '{
     "query": {
       "match_phrase": {
         "name": "mike"
+      }
+    }
+}'
+```
+### Get all documents with `multi_match` condition 
+`multi_match` help us to search for word or words in multiple fields
+```sh
+curl --request GET --url http://localhost:9200/index_name/_search --header 'Content-Type: application/json' \
+  --data '{
+    "query": {
+      "multi_match": {
+        "query": "mike mock"
+	"fields": ["title", "name"]
       }
     }
 }'
