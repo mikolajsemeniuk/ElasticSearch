@@ -1,5 +1,8 @@
 # ElasticSearch
-Run database
+* [Run database](####Run-database)
+* [Create index with mapping](###Create-index-with-mapping)
+
+#### Run database
 ```sh
 docker-compose up -d
 ```
@@ -23,7 +26,7 @@ Create index
 ```sh
 curl --request PUT --url http://localhost:9200/index_name | json_pp
 ```
-Create index with mapping
+### Create index with mapping
 ```sh
 curl -X PUT "localhost:9200/products" -H 'Content-Type: application/json' -d'
 {
